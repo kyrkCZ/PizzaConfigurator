@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mime;
 
 namespace PizzaConfigurator
 {
@@ -7,7 +8,8 @@ namespace PizzaConfigurator
         
         public static void Main(string[] args)
         {
-            
+            Pizza pizza= new Pizza();
+            pizza.start();
         }
 
         public void start()
@@ -16,7 +18,25 @@ namespace PizzaConfigurator
             int input = Console.Read();
             switch (input)
             {
-                case 1: break;
+                case 1: 
+                    //Vyber pizza
+                    
+                    break;
+                case 2: 
+                    //Oblibené pizzy
+                    
+                    break;
+                case 3: 
+                    //Seznam ingrediencí
+                    
+                    break;
+                case 4: 
+                    //End
+                    System.Environment.Exit(0);
+                    break;
+                default:
+                    start();
+                    break;
             }
         }
     }
