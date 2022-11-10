@@ -4,56 +4,72 @@ using System.Runtime.InteropServices;
 
 namespace PizzaConfigurator
 {
-    internal class Pizza
+    internal class Program
     {
-        
+        struct Pizza
+        {
+            private Boolean zaklad; //case false tomato, case true smetana
+            private Boolean syrovyZaklad;
+        }
         public static void Main(string[] args)
         {
-            Pizza pizza= new Pizza();
-            pizza.start();
+            Program program = new Program();
+            program.start();
         }
 
         private void start()
         {
-            Console.WriteLine("Vyberte možnost 1,2,3,4,5");
-            int input = 0;
-            try
+            while (true)
             {
-                input = Convert.ToInt32(Console.ReadLine());
-            }
-            catch
-            {
-                Console.WriteLine("Zkuste to znovu");
-            }
-            switch (input)
-            {
-                case 1: 
-                    //Vyber pizza
-                    
-                    break;
-                case 2: 
-                    //Oblibené pizzy
+                Console.WriteLine("Vyberte možnost 1,2,3");
+                int input = 0;
+                try
+                {
+                    input = Convert.ToInt32(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Zkuste to znovu");
+                }
 
-                    break;
-                case 3:
-                    //Seznam předsestavených pizza
-                    
-                    break;
-                case 4: 
-                    //Seznam ingrediencí
-                    
-                    break;
-                case 5: 
-                    //End
-                    System.Environment.Exit(0);
-                    break;
-                default:
-                    start();
-                    break;
+                switch (input)
+                {
+                    case 1:
+                        //Sestaveni pizza
+
+                        break;
+                    case 2:
+                        //Oblibené pizzy
+
+                        break;
+                    case 3:
+                        //End
+                        System.Environment.Exit(0);
+                        break;
+                    default:
+                        continue;
+                }
+
+                break;
             }
         }
 
-        public void select()
+        public void selectPizza()
+        {
+            
+        }
+
+        public void showFavoritePizza()
+        {
+            
+        }
+
+        public void showDefaultPizza()
+        {
+            
+        }
+
+        public void showIng()
         {
             
         }
