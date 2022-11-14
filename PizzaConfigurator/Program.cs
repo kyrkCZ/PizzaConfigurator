@@ -2,11 +2,11 @@
 
 namespace PizzaConfigurator
 {
-    static class Program
+    class Program
     {
         public static void Main(string[] args)
         {
-            Start();
+            Program program = new Program();
         }
 
         public static void Start()
@@ -19,10 +19,12 @@ namespace PizzaConfigurator
                         //Sestaveni pizza
                         Pizza pizza = new Pizza();
                         pizza.Phase(0);
+                        Console.WriteLine();
+
                         break;
                     case 2:
                         //Oblibené pizzy
-                        showFavoritePizza();
+                        //showFavoritePizza();
                         break;
                     case 3:
                         //End
@@ -36,13 +38,13 @@ namespace PizzaConfigurator
             }
         }
 
-        public static void showFavoritePizza()
+        public void showFavoritePizza()
         {
         }
 
-        public static void saveToFavorite()
+        public void saveToFavorite()
         {
-            
+
         }
 
         public static int keyInput()
@@ -93,17 +95,12 @@ namespace PizzaConfigurator
         }
     }
 
-    internal class Pizza
+    public class Pizza
     {
-        public Pizza(bool zaklad = false, bool syrovyZaklad = false)
-        {
-            this.zaklad = zaklad;
-            this.syrovyZaklad = syrovyZaklad;
-        }
-        
         private Boolean zaklad; //case false tomato, case true smetana
         private Boolean syrovyZaklad;
         
+
         public bool Zaklad
         {
             get => zaklad;
@@ -114,120 +111,6 @@ namespace PizzaConfigurator
         {
             get => syrovyZaklad;
             set => syrovyZaklad = value;
-        }
-        
-        public struct Syry{
-            private static Boolean mozzarela, eidam, hermelin, parmazan; //sýry
-            public static bool Mozzarela
-            {
-                get => mozzarela;
-                set => mozzarela = value;
-            }
-
-            public static bool Eidam
-            {
-                get => eidam;
-                set => eidam = value;
-            }
-
-            public static bool Hermelin
-            {
-                get => hermelin;
-                set => hermelin = value;
-            }
-
-            public static bool Parmazan
-            {
-                get => parmazan;
-                set => parmazan = value;
-            }
-            }
-
-        public struct Uzeniny
-        {
-            private static Boolean sunka, slanina, vysocina, klobaska; //uzeniny
-
-            public static bool Sunka
-            {
-                get => sunka;
-                set => sunka = value;
-            }
-
-            public static bool Slanina
-            {
-                get => slanina;
-                set => slanina = value;
-            }
-
-            public static bool Vysocina
-            {
-                get => vysocina;
-                set => vysocina = value;
-            }
-
-            public static bool Klobaska
-            {
-                get => klobaska;
-                set => klobaska = value;
-            }
-        }
-
-        public struct Maso
-        {
-            private static Boolean kureci, veprove; //maso
-
-            public static bool Kureci
-            {
-                get => kureci;
-                set => kureci = value;
-            }
-
-            public static bool Veprove
-            {
-                get => veprove;
-                set => veprove = value;
-            }
-        }
-
-        public struct Ostatni
-        {
-            private static Boolean kukurice, zampiony, feferonky, ananas, vejce, olivy; //ostatní
-
-            public static bool Kukurice
-            {
-                get => kukurice;
-                set => kukurice = value;
-            }
-
-            public static bool Zampiony
-            {
-                get => zampiony;
-                set => zampiony = value;
-            }
-
-            public static bool Feferonky
-            {
-                get => feferonky;
-                set => feferonky = value;
-            }
-
-            public static bool Ananas
-            {
-                get => ananas;
-                set => ananas = value;
-            }
-
-            public static bool Vejce
-            {
-                get => vejce;
-                set => vejce = value;
-            }
-
-            public static bool Olivy
-            {
-                get => olivy;
-                set => olivy = value;
-            }
         }
 
         public void Phase(int phase)
@@ -254,6 +137,7 @@ namespace PizzaConfigurator
                     break;
             }
         }
+
         public bool selectZaklad()
         {
             Console.WriteLine("Vyberte si základ:");
@@ -262,10 +146,11 @@ namespace PizzaConfigurator
             Console.WriteLine("3 = Zpět");
             while (true)
             {
-                if(Program.keyInput()==1)
+                if (Program.keyInput() == 1)
                 {
                     return zaklad == true;
-                }else if (Program.keyInput() == 2)
+                }
+                else if (Program.keyInput() == 2)
                 {
                     return zaklad == false;
                 }
@@ -279,7 +164,7 @@ namespace PizzaConfigurator
                 }
             }
         }
-        
+
         public bool selectSyrovyZaklad()
         {
             Console.WriteLine("Sýrový základ:");
@@ -288,10 +173,11 @@ namespace PizzaConfigurator
             Console.WriteLine("3 = Zpět");
             while (true)
             {
-                if(Program.keyInput()==1)
+                if (Program.keyInput() == 1)
                 {
                     return SyrovyZaklad == true;
-                }else if (Program.keyInput() == 2)
+                }
+                else if (Program.keyInput() == 2)
                 {
                     return SyrovyZaklad == false;
                 }
@@ -311,24 +197,17 @@ namespace PizzaConfigurator
             while (true)
             {
                 Console.WriteLine("Sýry:");
-                Console.WriteLine("1 = Mozzarela " + Syry.Mozzarela);
-                Console.WriteLine("2 = Mozzarela " + Syry.Mozzarela);
-                Console.WriteLine("3 = Mozzarela " + Syry.Mozzarela);
-                Console.WriteLine("4 = Mozzarela " + Syry.Mozzarela);
                 Console.WriteLine("5 = Zpět");
                 switch (Program.keyInput())
                 {
                     case 1:
-                        Syry.Mozzarela = !Syry.Mozzarela;
                         continue;
                     case 2:
-                        Syry.Hermelin = !Syry.Hermelin;
                         continue;
                     case 3:
-                        Syry.Eidam = !Syry.Eidam;
                         continue;
                     case 4:
-                        Syry.Parmazan = !Syry.Parmazan;
+                        
                         continue;
                     case 5:
                         Phase(1);
@@ -351,4 +230,127 @@ namespace PizzaConfigurator
         {
         }
     }
+
+    public class Syry : Pizza
+    {
+
+private Boolean mozzarela, eidam, hermelin, parmazan; //sýry
+
+        public Syry(bool mozzarela, bool eidam, bool hermelin, bool parmazan)
+        {
+            this.mozzarela = mozzarela;
+            this.eidam = eidam;
+            this.hermelin = hermelin;
+            this.parmazan = parmazan;
+        }
+
+        public bool Mozzarela
+        {
+            get => mozzarela;
+            set => mozzarela = value;
+        }
+
+        public bool Eidam
+        {
+            get => eidam;
+            set => eidam = value;
+        }
+
+        public bool Hermelin
+        {
+            get => hermelin;
+            set => hermelin = value;
+        }
+
+        public bool Parmazan
+        {
+            get => parmazan;
+            set => parmazan = value;
+        }
+    }
+    public class Uzeniny : Pizza
+    {
+        private Boolean sunka, slanina, vysocina, klobaska; //uzeniny
+
+        public bool Sunka
+        {
+            get => sunka;
+            set => sunka = value;
+        }
+
+        public bool Slanina
+        {
+            get => slanina;
+            set => slanina = value;
+        }
+
+        public bool Vysocina
+        {
+            get => vysocina;
+            set => vysocina = value;
+        }
+
+        public bool Klobaska
+        {
+            get => klobaska;
+            set => klobaska = value;
+        }
+    }
+    public class Maso : Pizza
+    {
+        private Boolean kureci, veprove; //maso
+
+        public bool Kureci
+        {
+            get => kureci;
+            set => kureci = value;
+        }
+
+        public bool Veprove
+        {
+            get => veprove;
+            set => veprove = value;
+        }
+    }
+    public class Ostatni : Pizza
+    {
+        private Boolean kukurice, zampiony, feferonky, ananas, vejce, olivy; //ostatní
+
+        public bool Kukurice
+        {
+            get => kukurice;
+            set => kukurice = value;
+        }
+
+        public bool Zampiony
+        {
+            get => zampiony;
+            set => zampiony = value;
+        }
+
+        public bool Feferonky
+        {
+            get => feferonky;
+            set => feferonky = value;
+        }
+
+        public bool Ananas
+        {
+            get => ananas;
+            set => ananas = value;
+        }
+
+        public bool Vejce
+        {
+            get => vejce;
+            set => vejce = value;
+        }
+
+        public bool Olivy
+        {
+            get => olivy;
+            set => olivy = value;
+        }
+    }
+    
 }
