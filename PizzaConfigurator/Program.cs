@@ -5,42 +5,39 @@ using System.Diagnostics;
 
 namespace PizzaConfigurator
 {
-    internal class Program
+    internal class Pizza
     {
-        struct Pizza
-        {
-            public Pizza(Boolean _zaklad, Boolean _syrovyZaklad)
+        private Boolean zaklad; //case false tomato, case true smetana
+        private Boolean syrovyZaklad;
+        public Pizza(Boolean _zaklad, Boolean _syrovyZaklad)
             {
                 zaklad = _zaklad;
                 syrovyZaklad = _syrovyZaklad;
-                mozzarela = false;
-                eidam = false;
-                hermelin = false;
-                parmazan = false;
-                sunka = false;
-                slanina = false;
-                vysocina = false;
-                klobaska = false;
-                kureci = false;
-                veprove = false;
-                kukurice = false;
-                zampiony = false;
-                feferonky = false;
-                ananas = false;
-                vejce = false;
-                olivy = false;
             }
-            private Boolean zaklad; //case false tomato, case true smetana
-            private Boolean syrovyZaklad;
+
+        struct Syry
+        {
             private Boolean mozzarela, eidam, hermelin, parmazan;//sýry
+        }
+
+        struct Uzeniny
+        {
             private Boolean sunka, slanina, vysocina, klobaska;//uzeniny
+        }
+
+        struct Maso
+        {
             private Boolean kureci, veprove;//maso
+        }
+
+        struct Ostatni
+        {
             private Boolean kukurice, zampiony, feferonky, ananas, vejce, olivy;//ostatní
         }
         public static void Main(string[] args)
         {
-            Program program = new Program();
-            program.start();
+            Pizza pizza = new Pizza();
+            pizza.start();
         }
 
         public void start()
@@ -62,7 +59,8 @@ namespace PizzaConfigurator
                 {
                     case 1:
                         //Sestaveni pizza
-                        selectPizza();
+                        Pizza pizza = new Pizza();
+                        selectBase();
                         break;
                     case 2:
                         //Oblibené pizzy
@@ -80,22 +78,42 @@ namespace PizzaConfigurator
             }
         }
 
-        public void selectPizza()
+        public void selectBase()
+        {
+
+        }
+
+        public void keyInput()
+        {
+            switch (choice)
+            {
+                // 1 ! key
+                case ConsoleKey.D1:
+                    Console.WriteLine("1. Choice");
+                    break;
+                //2 @ key
+                case ConsoleKey.D2:
+                    Console.WriteLine("2. Choice");
+                    break;
+            }
+        }
+
+        public void selectSyry()
         {
             
         }
 
-        public void showFavoritePizza()
+        public void selectUzeniny()
         {
             
         }
 
-        public void showDefaultPizza()
+        public void selectMaso()
         {
             
         }
 
-        public void showIng()
+        public void selectExtra()
         {
             
         }
