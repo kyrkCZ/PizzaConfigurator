@@ -7,28 +7,24 @@ namespace PizzaConfigurator
         public static void Main(string[] args)
         {
             Program program = new Program();
-            Pizza pizza = new Pizza();
-            Pizza.Maso pizzaMaso = new Pizza.Maso();
-            Pizza.Syry pizzaSyry = new Pizza.Syry();
-            Pizza.Uzeniny pizzaUzeniny = new Pizza.Uzeniny();
-            Pizza.Ostatni pizzaOstatni = new Pizza.Ostatni();
             program.Start();
         }
 
         public void Start()
         {
+            Console.WriteLine("Bagr");
             while (true)
             {
-                switch (keyInput())
+                switch (KeyInput())
                 {
                     case 1:
                         //Sestaveni pizza
-                        Console.WriteLine("select 1");
-                        Phase(0);
+                        Pizza pizza = new Pizza();
+                        Phase(1, pizza);
                         break;
                     case 2:
                         //Oblibené pizzy
-                        showFavoritePizza();
+                        ShowFavoritePizza();
                         break;
                     case 3:
                         //End
@@ -37,45 +33,48 @@ namespace PizzaConfigurator
                     default:
                         continue;
                 }
-
                 continue;
             }
         }
 
-        public void Phase(int phase)
+        public static void Phase(int phase, Pizza pizza)
         {
             switch (phase)
             {
                 case 1:
-                    pizza.selectZaklad();
+                    pizza.SelectBase(pizza);
                     break;
                 case 2:
-                    selectSyrovyZaklad();
+                    pizza.SelectCheeseBase(pizza);
                     break;
                 case 3:
-
+                    pizza.SelectSyry(pizza);
                     break;
                 case 4:
-
+                    pizza.SelectUzeniny(pizza);
                     break;
                 case 5:
-
+                    pizza.SelectMaso(pizza);
                     break;
                 case 6:
-
+                    pizza.SelectOstatni(pizza);
+                    break;
+                default:
                     break;
             }
+
+            throw new InvalidOperationException();
         }
-        public static void showFavoritePizza()
+        public void ShowFavoritePizza()
         {
         }
 
-        public void saveToFavorite()
+        public void SaveToFavorite()
         {
 
         }
 
-        public static int keyInput()
+        public static int KeyInput()
         {
             ConsoleKey key = Console.ReadKey(true).Key;
             switch (key)
@@ -122,12 +121,4 @@ namespace PizzaConfigurator
             }
         }
     }
-
-    
-
-    
-    
-    
-    
-    
 }
