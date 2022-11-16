@@ -1,5 +1,4 @@
 ﻿using System;
-using PizzaConfigurator.Properties;
 
 namespace PizzaConfigurator
 {
@@ -26,35 +25,6 @@ namespace PizzaConfigurator
             set => syrovyZaklad = value;
         }
 
-        public static void Phase(int phase)
-        {
-            switch (phase)
-            {
-                case 1:
-                    selectZaklad();
-                    break;
-                case 2:
-                    selectSyrovyZaklad();
-                    break;
-                case 3:
-                    Syry syry = new Syry();
-                    syry.selectSyry();
-                    break;
-                case 4:
-                    Uzeniny uzeniny = new Uzeniny();
-                    Uzeniny.selectUzeniny();
-                    break;
-                case 5:
-                    Maso maso = new Maso();
-                    Maso.selectMaso();
-                    break;
-                case 6:
-                    Ostatni ostatni = new Ostatni();
-                    Ostatni.selectOstatni();
-                    break;
-            }
-        }
-
         public bool selectZaklad()
         {
             Console.WriteLine("Vyberte si základ:");
@@ -74,7 +44,7 @@ namespace PizzaConfigurator
                 else if (Program.keyInput() == 3)
                 {
                     Program program = new Program();
-                    Program.Start();
+                    program.Start();
                 }
                 else
                 {
@@ -101,12 +71,176 @@ namespace PizzaConfigurator
                 }
                 else if (Program.keyInput() == 3)
                 {
-                    Phase(0);
+                    Program program = new Program();
+                    program.Start();
                 }
                 else
                 {
                     continue;
                 }
+            }
+        }
+        public class Syry
+        {
+            private Boolean mozzarela, eidam, hermelin, parmazan; //sýry
+
+            public bool Mozzarela
+            {
+                get => mozzarela;
+                set => mozzarela = value;
+            }
+
+            public bool Eidam
+            {
+                get => eidam;
+                set => eidam = value;
+            }
+
+            public bool Hermelin
+            {
+                get => hermelin;
+                set => hermelin = value;
+            }
+
+            public bool Parmazan
+            {
+                get => parmazan;
+                set => parmazan = value;
+            }
+
+            public Syry(bool zaklad = default, bool syrovyZaklad = default)
+            {
+            }
+
+            public void selectSyry()
+            {
+                while (true)
+                {
+                    Console.WriteLine("Sýry:");
+                    Console.WriteLine("5 = Zpět");
+                    switch (Program.keyInput())
+                    {
+                        case 1:
+                            continue;
+                        case 2:
+                            continue;
+                        case 3:
+                            continue;
+                        case 4:
+
+                            continue;
+                        case 5:
+                            break;
+                        default:
+                            continue;
+                    }
+                }
+            }
+        }
+        public class Uzeniny
+        {
+            private Boolean sunka, slanina, vysocina, klobaska; //uzeniny
+
+            public bool Sunka
+            {
+                get => sunka;
+                set => sunka = value;
+            }
+
+            public bool Slanina
+            {
+                get => slanina;
+                set => slanina = value;
+            }
+
+            public bool Vysocina
+            {
+                get => vysocina;
+                set => vysocina = value;
+            }
+
+            public bool Klobaska
+            {
+                get => klobaska;
+                set => klobaska = value;
+            }
+
+            public Uzeniny(bool zaklad= default, bool syrovyZaklad= default)
+            {
+            }
+            public void selectUzeniny()
+            {
+            }
+        }
+        public class Maso
+        {
+            private Boolean kureci, veprove; //maso
+
+            public bool Kureci
+            {
+                get => kureci;
+                set => kureci = value;
+            }
+
+            public bool Veprove
+            {
+                get => veprove;
+                set => veprove = value;
+            }
+
+            public Maso(bool zaklad= default, bool syrovyZaklad= default)
+            {
+            }
+            public void selectMaso()
+            {
+            }
+        }
+        public class Ostatni
+        {
+            private Boolean kukurice, zampiony, feferonky, ananas, vejce, olivy; //ostatní
+
+
+            public bool Kukurice
+            {
+                get => kukurice;
+                set => kukurice = value;
+            }
+
+            public bool Zampiony
+            {
+                get => zampiony;
+                set => zampiony = value;
+            }
+
+            public bool Feferonky
+            {
+                get => feferonky;
+                set => feferonky = value;
+            }
+
+            public bool Ananas
+            {
+                get => ananas;
+                set => ananas = value;
+            }
+
+            public bool Vejce
+            {
+                get => vejce;
+                set => vejce = value;
+            }
+
+            public bool Olivy
+            {
+                get => olivy;
+                set => olivy = value;
+            }
+
+            public Ostatni(bool zaklad= default, bool syrovyZaklad= default)
+            {
+            }
+            public void selectOstatni()
+            {
             }
         }
     }

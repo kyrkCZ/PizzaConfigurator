@@ -1,5 +1,4 @@
 ﻿using System;
-using PizzaConfigurator.Properties;
 
 namespace PizzaConfigurator
 {
@@ -8,10 +7,15 @@ namespace PizzaConfigurator
         public static void Main(string[] args)
         {
             Program program = new Program();
-            Program.Start();
+            Pizza pizza = new Pizza();
+            Pizza.Maso pizzaMaso = new Pizza.Maso();
+            Pizza.Syry pizzaSyry = new Pizza.Syry();
+            Pizza.Uzeniny pizzaUzeniny = new Pizza.Uzeniny();
+            Pizza.Ostatni pizzaOstatni = new Pizza.Ostatni();
+            program.Start();
         }
 
-        public static void Start()
+        public void Start()
         {
             while (true)
             {
@@ -19,8 +23,8 @@ namespace PizzaConfigurator
                 {
                     case 1:
                         //Sestaveni pizza
-                        Pizza pizza = new Pizza();
-                        Pizza.Phase(0);
+                        Console.WriteLine("select 1");
+                        Phase(0);
                         break;
                     case 2:
                         //Oblibené pizzy
@@ -38,6 +42,30 @@ namespace PizzaConfigurator
             }
         }
 
+        public void Phase(int phase)
+        {
+            switch (phase)
+            {
+                case 1:
+                    pizza.selectZaklad();
+                    break;
+                case 2:
+                    selectSyrovyZaklad();
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+
+                    break;
+                case 6:
+
+                    break;
+            }
+        }
         public static void showFavoritePizza()
         {
         }

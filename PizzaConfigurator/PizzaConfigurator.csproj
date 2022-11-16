@@ -40,10 +40,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Pizza.cs" />
-        <Compile Include="Ingredience\Maso.cs" />
-        <Compile Include="Ingredience\Ostatni.cs" />
-        <Compile Include="Ingredience\Syry.cs" />
-        <Compile Include="Ingredience\Uzeniny.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
