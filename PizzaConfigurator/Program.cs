@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace PizzaConfigurator
 {
@@ -13,12 +14,16 @@ namespace PizzaConfigurator
         public void Start()
         {
             Console.WriteLine("Bagr");
+            Console.WriteLine("Bagr");
+            Console.WriteLine("Bagr");
+            Console.WriteLine("Bagr");
+            Console.WriteLine("Bagr");
             while (true)
             {
                 switch (KeyInput())
                 {
                     case 1:
-                        //Sestaveni pizza
+                        //Sestaveni pizza from scratch
                         Pizza pizza = new Pizza();
                         Phase(1, pizza);
                         break;
@@ -27,6 +32,10 @@ namespace PizzaConfigurator
                         ShowFavoritePizza();
                         break;
                     case 3:
+                        //Select and edit default pizza
+                        ShowDefaultPizza();
+                        break;
+                    case 4:
                         //End
                         System.Environment.Exit(0);
                         break;
@@ -35,6 +44,11 @@ namespace PizzaConfigurator
                 }
                 continue;
             }
+        }
+
+        private void ShowDefaultPizza()
+        {
+            
         }
 
         public static void Phase(int phase, Pizza pizza)
@@ -59,19 +73,31 @@ namespace PizzaConfigurator
                 case 6:
                     pizza.SelectOstatni(pizza);
                     break;
+                case 7:
+                    Program.SavePizzaToOrders(pizza);
+                    break;
                 default:
                     break;
             }
 
             throw new InvalidOperationException();
         }
+
+        public static void SavePizzaToOrders(Pizza pizza)
+        {
+            foreach (PropertyInfo prop in typeof(Pizza).GetProperties())
+            {
+                Console.WriteLine(prop.Name);
+            }
+        }
         public void ShowFavoritePizza()
         {
+            
         }
 
         public void SaveToFavorite()
         {
-
+            
         }
 
         public static int KeyInput()
