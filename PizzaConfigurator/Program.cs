@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO.Pipes;
+using System.Linq;
 using System.Reflection;
 
 namespace PizzaConfigurator
@@ -13,6 +15,7 @@ namespace PizzaConfigurator
 
         public void Start()
         {
+            Console.Clear();
             Console.WriteLine("Bagr");
             Console.WriteLine("Bagr");
             Console.WriteLine("Bagr");
@@ -74,22 +77,20 @@ namespace PizzaConfigurator
                     pizza.SelectOstatni(pizza);
                     break;
                 case 7:
-                    Program.SavePizzaToOrders(pizza);
+                    SavePizzaToOrders(pizza);
                     break;
                 default:
                     break;
             }
-
-            throw new InvalidOperationException();
         }
-
+        
         public static void SavePizzaToOrders(Pizza pizza)
         {
-            foreach (PropertyInfo prop in typeof(Pizza).GetProperties())
-            {
-                Console.WriteLine(prop.Name);
-            }
+            
+            pizza = null;
+            Program.Main(new string[] { });
         }
+
         public void ShowFavoritePizza()
         {
             
