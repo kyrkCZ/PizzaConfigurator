@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Text.Json;
 
 namespace PizzaConfigurator
 {
@@ -202,6 +203,7 @@ namespace PizzaConfigurator
 
         private Boolean kukurice, zampiony, feferonky, ananas, vejce, olivy; //ostatní
 
+
         public void SelectOstatni(Pizza pizza)
         {
             while (true)
@@ -244,42 +246,114 @@ namespace PizzaConfigurator
             }
         }
 
-        public bool Base => @base;
+        public bool Base
+        {
+            get => @base;
+            set => @base = value;
+        }
 
-        public bool CheeseBase => cheeseBase;
+        public bool CheeseBase
+        {
+            get => cheeseBase;
+            set => cheeseBase = value;
+        }
 
-        public bool Mozzarela => mozzarela;
+        public bool Mozzarela
+        {
+            get => mozzarela;
+            set => mozzarela = value;
+        }
 
-        public bool Eidam => eidam;
+        public bool Eidam
+        {
+            get => eidam;
+            set => eidam = value;
+        }
 
-        public bool Hermelin => hermelin;
+        public bool Hermelin
+        {
+            get => hermelin;
+            set => hermelin = value;
+        }
 
-        public bool Parmazan => parmazan;
+        public bool Parmazan
+        {
+            get => parmazan;
+            set => parmazan = value;
+        }
 
-        public bool Sunka => sunka;
+        public bool Sunka
+        {
+            get => sunka;
+            set => sunka = value;
+        }
 
-        public bool Slanina => slanina;
+        public bool Slanina
+        {
+            get => slanina;
+            set => slanina = value;
+        }
 
-        public bool Vysocina => vysocina;
+        public bool Vysocina
+        {
+            get => vysocina;
+            set => vysocina = value;
+        }
 
-        public bool Klobaska => klobaska;
+        public bool Klobaska
+        {
+            get => klobaska;
+            set => klobaska = value;
+        }
 
-        public bool Kureci => kureci;
+        public bool Kureci
+        {
+            get => kureci;
+            set => kureci = value;
+        }
 
-        public bool Veprove => veprove;
+        public bool Veprove
+        {
+            get => veprove;
+            set => veprove = value;
+        }
 
-        public bool Kukurice => kukurice;
+        public bool Kukurice
+        {
+            get => kukurice;
+            set => kukurice = value;
+        }
 
-        public bool Zampiony => zampiony;
+        public bool Zampiony
+        {
+            get => zampiony;
+            set => zampiony = value;
+        }
 
-        public bool Feferonky => feferonky;
+        public bool Feferonky
+        {
+            get => feferonky;
+            set => feferonky = value;
+        }
 
-        public bool Ananas => ananas;
+        public bool Ananas
+        {
+            get => ananas;
+            set => ananas = value;
+        }
 
-        public bool Vejce => vejce;
+        public bool Vejce
+        {
+            get => vejce;
+            set => vejce = value;
+        }
 
-        public bool Olivy => olivy;
-
+        public bool Olivy
+        {
+            get => olivy;
+            set => olivy = value;
+        }
+        
         public Pizza(bool @base, bool cheeseBase, bool mozzarela, bool eidam, bool hermelin, bool parmazan, bool sunka,
             bool slanina, bool vysocina, bool klobaska, bool kureci, bool veprove, bool kukurice, bool zampiony,
             bool feferonky, bool ananas, bool vejce, bool olivy)
