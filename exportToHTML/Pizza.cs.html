@@ -1,0 +1,406 @@
+<html>
+<head>
+<title>Pizza.cs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Pizza.cs</font>
+</center></td></tr></table>
+<pre><span class="s0">using </span><span class="s1">System</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.Reflection</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.Text.Json</span><span class="s0">;</span>
+
+<span class="s0">namespace </span><span class="s1">PizzaConfigurator</span>
+<span class="s1">{</span>
+    <span class="s0">public class </span><span class="s1">Pizza</span>
+    <span class="s1">{</span>
+        <span class="s0">private </span><span class="s1">Boolean @base</span><span class="s0">; </span><span class="s2">//case false tomato, case true smetana</span>
+        <span class="s0">private </span><span class="s1">Boolean cheeseBase</span><span class="s0">; </span><span class="s2">//case false bez sýrového okraje, case false se</span>
+
+        <span class="s0">public void </span><span class="s1">SelectBase(Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s1">Console.Clear()</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;Vyberte si základ:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;1 = Rajčatový základ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;2 = Smetanový základ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;3 = Zpět&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s0">int </span><span class="s1">key = Program.KeyInput()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(key == </span><span class="s4">1</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">pizza.@base = </span><span class="s0">true;</span>
+                    <span class="s1">Program.Phase(</span><span class="s4">2</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(key == </span><span class="s4">2</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">pizza.@base = </span><span class="s0">false;</span>
+                    <span class="s1">Program.Phase(</span><span class="s4">2</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(key == </span><span class="s4">3</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">GC.Collect()</span><span class="s0">;</span>
+                    <span class="s1">GC.WaitForPendingFinalizers()</span><span class="s0">;</span>
+                    <span class="s1">Program.Main(</span><span class="s0">new string</span><span class="s1">[] { })</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public void </span><span class="s1">SelectCheeseBase(Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s1">Console.Clear()</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;Sýrový základ:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;1 = Ano&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;2 = Ne&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s3">&quot;3 = Zpět&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s0">int </span><span class="s1">key = Program.KeyInput()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(key == </span><span class="s4">1</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">pizza.cheeseBase = </span><span class="s0">true;</span>
+                    <span class="s1">Program.Phase(</span><span class="s4">3</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(key == </span><span class="s4">2</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">pizza.cheeseBase = </span><span class="s0">false;</span>
+                    <span class="s1">Program.Phase(</span><span class="s4">3</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(key == </span><span class="s4">3</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">Program.Phase(</span><span class="s4">1</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">private </span><span class="s1">Boolean mozzarela</span><span class="s0">, </span><span class="s1">eidam</span><span class="s0">, </span><span class="s1">hermelin</span><span class="s0">, </span><span class="s1">parmazan</span><span class="s0">; </span><span class="s2">//sýry</span>
+
+        <span class="s0">public void </span><span class="s1">SelectSyry(Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s1">Console.Clear()</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;1 = Mozzarela:&quot; </span><span class="s1">+ pizza.mozzarela)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;2 = Eidam: &quot; </span><span class="s1">+ pizza.eidam)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;3 = Hermelin: &quot; </span><span class="s1">+ pizza.hermelin)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;4 = Parmazan: &quot; </span><span class="s1">+ pizza.parmazan)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;5 = Potvrdit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;6 = Zpět&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s0">switch </span><span class="s1">(Program.KeyInput())</span>
+                <span class="s1">{</span>
+                    <span class="s0">case </span><span class="s4">1</span><span class="s1">:</span>
+                        <span class="s1">pizza.mozzarela = !pizza.mozzarela</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">2</span><span class="s1">:</span>
+                        <span class="s1">pizza.eidam = !pizza.eidam</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">3</span><span class="s1">:</span>
+                        <span class="s1">pizza.hermelin = !pizza.hermelin</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">4</span><span class="s1">:</span>
+                        <span class="s1">pizza.parmazan = !pizza.parmazan</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">5</span><span class="s1">:</span>
+                        <span class="s1">Program.Phase(</span><span class="s4">4</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s4">6</span><span class="s1">:</span>
+                        <span class="s1">Program.Phase(</span><span class="s4">2</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">default</span><span class="s1">:</span>
+                        <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+
+        <span class="s0">private </span><span class="s1">Boolean sunka</span><span class="s0">, </span><span class="s1">slanina</span><span class="s0">, </span><span class="s1">vysocina</span><span class="s0">, </span><span class="s1">klobaska</span><span class="s0">; </span><span class="s2">//uzeniny</span>
+
+        <span class="s0">public void </span><span class="s1">SelectUzeniny(Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s1">Console.Clear()</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;1 = Šunka:&quot; </span><span class="s1">+ pizza.sunka)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;2 = Slanina: &quot; </span><span class="s1">+ pizza.slanina)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;3 = Vysocina: &quot; </span><span class="s1">+ pizza.vysocina)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;4 = Klobaska: &quot; </span><span class="s1">+ pizza.klobaska)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;5 = Potvrdit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;6 = Zpět&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s0">switch </span><span class="s1">(Program.KeyInput())</span>
+                <span class="s1">{</span>
+                    <span class="s0">case </span><span class="s4">1</span><span class="s1">:</span>
+                        <span class="s1">pizza.sunka = !pizza.sunka</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">2</span><span class="s1">:</span>
+                        <span class="s1">pizza.slanina = !pizza.slanina</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">3</span><span class="s1">:</span>
+                        <span class="s1">pizza.vysocina = !pizza.vysocina</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">4</span><span class="s1">:</span>
+                        <span class="s1">pizza.klobaska = !pizza.klobaska</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">5</span><span class="s1">:</span>
+                        <span class="s1">Program.Phase(</span><span class="s4">5</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s4">6</span><span class="s1">:</span>
+                        <span class="s1">Program.Phase(</span><span class="s4">3</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">default</span><span class="s1">:</span>
+                        <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">private </span><span class="s1">Boolean kureci</span><span class="s0">, </span><span class="s1">veprove</span><span class="s0">; </span><span class="s2">//maso</span>
+
+        <span class="s0">public void </span><span class="s1">SelectMaso(Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s1">Console.Clear()</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;1 = Kuřecí maso: &quot; </span><span class="s1">+ pizza.kureci)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;2 = Vepřové maso: &quot; </span><span class="s1">+ pizza.veprove)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;3 = Potvrdit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;4 = Zpět&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s0">int </span><span class="s1">key = Program.KeyInput()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(key == </span><span class="s4">1</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">pizza.kureci = !pizza.kureci</span><span class="s0">;</span>
+                    <span class="s0">continue;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">if </span><span class="s1">(key == </span><span class="s4">2</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">pizza.veprove = !pizza.veprove</span><span class="s0">;</span>
+                    <span class="s0">continue;</span>
+                <span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(key == </span><span class="s4">3</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">Program.Phase(</span><span class="s4">6</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(key == </span><span class="s4">4</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">Program.Phase(</span><span class="s4">4</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">private </span><span class="s1">Boolean kukurice</span><span class="s0">, </span><span class="s1">zampiony</span><span class="s0">, </span><span class="s1">feferonky</span><span class="s0">, </span><span class="s1">ananas</span><span class="s0">, </span><span class="s1">vejce</span><span class="s0">, </span><span class="s1">olivy</span><span class="s0">; </span><span class="s2">//ostatní</span>
+
+
+        <span class="s0">public void </span><span class="s1">SelectOstatni(Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s1">Console.Clear()</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;1 = Kukuřice:&quot; </span><span class="s1">+ pizza.kukurice)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;2 = Ananas: &quot; </span><span class="s1">+ pizza.ananas)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;3 = Feferonky: &quot; </span><span class="s1">+ pizza.feferonky)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;4 = Vejce: &quot; </span><span class="s1">+ pizza.vejce)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;5 = Olivy: &quot; </span><span class="s1">+ pizza.olivy)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;6 = Potvrdit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s3">&quot;7 = Zpět&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s0">switch </span><span class="s1">(Program.KeyInput())</span>
+                <span class="s1">{</span>
+                    <span class="s0">case </span><span class="s4">1</span><span class="s1">:</span>
+                        <span class="s1">pizza.kukurice = !pizza.kukurice</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">2</span><span class="s1">:</span>
+                        <span class="s1">pizza.ananas = !pizza.ananas</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">3</span><span class="s1">:</span>
+                        <span class="s1">pizza.feferonky = !pizza.feferonky</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">4</span><span class="s1">:</span>
+                        <span class="s1">pizza.vejce = !pizza.vejce</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">5</span><span class="s1">:</span>
+                        <span class="s1">pizza.olivy = !pizza.olivy</span><span class="s0">;</span>
+                        <span class="s0">continue;</span>
+                    <span class="s0">case </span><span class="s4">6</span><span class="s1">:</span>
+                        <span class="s1">Program.Phase(</span><span class="s4">7</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s4">7</span><span class="s1">:</span>
+                        <span class="s1">Program.Phase(</span><span class="s4">5</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">default</span><span class="s1">:</span>
+                        <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Base</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; @base</span><span class="s0">;</span>
+            <span class="s1">set =&gt; @base = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">CheeseBase</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; cheeseBase</span><span class="s0">;</span>
+            <span class="s1">set =&gt; cheeseBase = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Mozzarela</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; mozzarela</span><span class="s0">;</span>
+            <span class="s1">set =&gt; mozzarela = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Eidam</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; eidam</span><span class="s0">;</span>
+            <span class="s1">set =&gt; eidam = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Hermelin</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; hermelin</span><span class="s0">;</span>
+            <span class="s1">set =&gt; hermelin = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Parmazan</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; parmazan</span><span class="s0">;</span>
+            <span class="s1">set =&gt; parmazan = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Sunka</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; sunka</span><span class="s0">;</span>
+            <span class="s1">set =&gt; sunka = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Slanina</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; slanina</span><span class="s0">;</span>
+            <span class="s1">set =&gt; slanina = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Vysocina</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; vysocina</span><span class="s0">;</span>
+            <span class="s1">set =&gt; vysocina = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Klobaska</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; klobaska</span><span class="s0">;</span>
+            <span class="s1">set =&gt; klobaska = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Kureci</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; kureci</span><span class="s0">;</span>
+            <span class="s1">set =&gt; kureci = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Veprove</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; veprove</span><span class="s0">;</span>
+            <span class="s1">set =&gt; veprove = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Kukurice</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; kukurice</span><span class="s0">;</span>
+            <span class="s1">set =&gt; kukurice = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Zampiony</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; zampiony</span><span class="s0">;</span>
+            <span class="s1">set =&gt; zampiony = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Feferonky</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; feferonky</span><span class="s0">;</span>
+            <span class="s1">set =&gt; feferonky = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Ananas</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; ananas</span><span class="s0">;</span>
+            <span class="s1">set =&gt; ananas = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Vejce</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; vejce</span><span class="s0">;</span>
+            <span class="s1">set =&gt; vejce = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public bool </span><span class="s1">Olivy</span>
+        <span class="s1">{</span>
+            <span class="s1">get =&gt; olivy</span><span class="s0">;</span>
+            <span class="s1">set =&gt; olivy = value</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        
+        <span class="s0">public </span><span class="s1">Pizza(</span><span class="s0">bool </span><span class="s1">@base</span><span class="s0">, bool </span><span class="s1">cheeseBase</span><span class="s0">, bool </span><span class="s1">mozzarela</span><span class="s0">, bool </span><span class="s1">eidam</span><span class="s0">, bool </span><span class="s1">hermelin</span><span class="s0">, bool </span><span class="s1">parmazan</span><span class="s0">, bool </span><span class="s1">sunka</span><span class="s0">,</span>
+            <span class="s0">bool </span><span class="s1">slanina</span><span class="s0">, bool </span><span class="s1">vysocina</span><span class="s0">, bool </span><span class="s1">klobaska</span><span class="s0">, bool </span><span class="s1">kureci</span><span class="s0">, bool </span><span class="s1">veprove</span><span class="s0">, bool </span><span class="s1">kukurice</span><span class="s0">, bool </span><span class="s1">zampiony</span><span class="s0">,</span>
+            <span class="s0">bool </span><span class="s1">feferonky</span><span class="s0">, bool </span><span class="s1">ananas</span><span class="s0">, bool </span><span class="s1">vejce</span><span class="s0">, bool </span><span class="s1">olivy)</span>
+        <span class="s1">{</span>
+            <span class="s0">this</span><span class="s1">.@base = @base</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.cheeseBase = cheeseBase</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.mozzarela = mozzarela</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.eidam = eidam</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.hermelin = hermelin</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.parmazan = parmazan</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.sunka = sunka</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.slanina = slanina</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.vysocina = vysocina</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.klobaska = klobaska</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.kureci = kureci</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.veprove = veprove</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.kukurice = kukurice</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.zampiony = zampiony</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.feferonky = feferonky</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.ananas = ananas</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.vejce = vejce</span><span class="s0">;</span>
+            <span class="s0">this</span><span class="s1">.olivy = olivy</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public </span><span class="s1">Pizza()</span>
+        <span class="s1">{</span>
+            
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

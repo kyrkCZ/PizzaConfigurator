@@ -14,8 +14,10 @@ namespace PizzaConfigurator
         private static readonly string exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
         const string ordersPath = @"c:\temp\orders.json";
         const string favoritePath = @"c:\temp\favorites.json";
+        private const string pathString = @"c:\temp";
         public static void Main(string[] args)
         {
+            System.IO.Directory.CreateDirectory(pathString);
             Program program = new Program();
             program.Start();
         }

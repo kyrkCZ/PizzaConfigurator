@@ -1,0 +1,428 @@
+<html>
+<head>
+<title>Program.cs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Program.cs</font>
+</center></td></tr></table>
+<pre><span class="s0">using </span><span class="s1">System</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.Collections.Generic</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.IO</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.Linq</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.Text</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.Text.Json</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">System.Threading.Tasks</span><span class="s0">;</span>
+<span class="s0">using </span><span class="s1">Newtonsoft.Json</span><span class="s0">;</span>
+
+<span class="s0">namespace </span><span class="s1">PizzaConfigurator</span>
+<span class="s1">{</span>
+    <span class="s0">class </span><span class="s1">Program</span>
+    <span class="s1">{</span>
+        <span class="s0">private static readonly string </span><span class="s1">exePath = System.Reflection.Assembly.GetEntryAssembly().Location</span><span class="s0">;</span>
+        <span class="s0">const string </span><span class="s1">ordersPath = </span><span class="s2">@&quot;c:\temp\orders.json&quot;</span><span class="s0">;</span>
+        <span class="s0">const string </span><span class="s1">favoritePath = </span><span class="s2">@&quot;c:\temp\favorites.json&quot;</span><span class="s0">;</span>
+        <span class="s0">public static void </span><span class="s1">Main(</span><span class="s0">string</span><span class="s1">[] args)</span>
+        <span class="s1">{</span>
+            <span class="s1">Program program = </span><span class="s0">new </span><span class="s1">Program()</span><span class="s0">;</span>
+            <span class="s1">program.Start()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public void </span><span class="s1">Start()</span>
+        <span class="s1">{</span>
+            <span class="s1">Console.Clear()</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;------------Pizza konfigurátor------------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;1 = Sestavení nové pizza&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;2 = Seznam oblíbených pizza&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;3 = Výběr ze základních pizza&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;4 = Odejít&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s0">switch </span><span class="s1">(KeyInput())</span>
+                <span class="s1">{</span>
+                    <span class="s0">case </span><span class="s3">1</span><span class="s1">:</span>
+                        <span class="s4">//Sestaveni pizza from scratch</span>
+                        <span class="s1">Pizza pizza = </span><span class="s0">new </span><span class="s1">Pizza()</span><span class="s0">;</span>
+                        <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">pizza)</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">2</span><span class="s1">:</span>
+                        <span class="s4">//Oblibené pizzy</span>
+                        <span class="s1">ShowFavoritePizza()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">3</span><span class="s1">:</span>
+                        <span class="s4">//Select and edit default pizza</span>
+                        <span class="s1">ShowDefaultPizza()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">4</span><span class="s1">:</span>
+                        <span class="s4">//End</span>
+                        <span class="s1">System.Environment.Exit(</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">default</span><span class="s1">:</span>
+                        <span class="s0">continue;</span>
+                <span class="s1">}</span>
+                <span class="s0">continue;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">private void </span><span class="s1">ShowDefaultPizza()</span>
+        <span class="s1">{</span>
+            <span class="s1">Console.Clear()</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;------------Základní pizzy------------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;1 = Zpátky&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">string </span><span class="s1">strWorkPath = System.IO.Path.GetDirectoryName(exePath) + </span><span class="s2">&quot;\\PizzaTypes&quot;</span><span class="s0">;</span>
+            <span class="s1">DirectoryInfo directoryInfo = </span><span class="s0">new </span><span class="s1">DirectoryInfo(strWorkPath)</span><span class="s0">;</span>
+            <span class="s1">List&lt;Pizza&gt; defaultPizzas = </span><span class="s0">new </span><span class="s1">List&lt;Pizza&gt;()</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">counter = </span><span class="s3">2</span><span class="s0">;</span>
+            <span class="s0">foreach </span><span class="s1">(var file </span><span class="s0">in </span><span class="s1">directoryInfo.GetFiles(</span><span class="s2">&quot;*.json&quot;</span><span class="s1">))</span>
+            <span class="s1">{</span>
+                <span class="s1">String fileName = file.Name.Remove(file.Name.IndexOf(</span><span class="s2">&quot;.&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">5</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">fileName = fileName.ToUpper()</span><span class="s0">;</span>
+                <span class="s1">StreamReader sr = File.OpenText(file.FullName)</span><span class="s0">;</span>
+                <span class="s0">string </span><span class="s1">pizzaString = sr.ReadToEnd()</span><span class="s0">;</span>
+                <span class="s1">Pizza pizza = JsonConvert.DeserializeObject&lt;Pizza&gt;(pizzaString)</span><span class="s0">;</span>
+                <span class="s1">defaultPizzas.Add(pizza)</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(counter + </span><span class="s2">&quot; = Upravit &quot; </span><span class="s1">+ fileName)</span><span class="s0">;</span>
+                <span class="s1">counter++</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s0">switch </span><span class="s1">(KeyInput())</span>
+                <span class="s1">{</span>
+                    <span class="s0">case </span><span class="s3">1</span><span class="s1">:</span>
+                        <span class="s1">Main(</span><span class="s0">new string</span><span class="s1">[] { })</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">2</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">1</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">0</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">}</span>
+                    <span class="s0">case </span><span class="s3">3</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">2</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">1</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">4</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">3</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">2</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">}</span>
+                    <span class="s0">case </span><span class="s3">5</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">4</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">3</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">6</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">5</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">4</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">7</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">6</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">5</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">8</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">7</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">6</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s3">9</span><span class="s1">:</span>
+                        <span class="s0">if </span><span class="s1">(defaultPizzas.Count &lt; </span><span class="s3">8</span><span class="s1">)</span>
+                        <span class="s1">{</span>
+                            <span class="s0">continue;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Phase(</span><span class="s3">1</span><span class="s0">, </span><span class="s1">defaultPizzas[</span><span class="s3">7</span><span class="s1">])</span><span class="s0">;</span>
+                            <span class="s0">break;</span>
+                        <span class="s1">} </span>
+                    <span class="s0">default</span><span class="s1">: </span>
+                        <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">private static void </span><span class="s1">SavePizzaToOrders(Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">string </span><span class="s1">jsonPizza = JsonConvert.SerializeObject(pizza)</span><span class="s0">;</span>
+            <span class="s1">SavePizzaToOrdersFile(jsonPizza)</span><span class="s0">;</span>
+            <span class="s1">SaveToFavorite(jsonPizza)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">public static </span><span class="s1">Task SavePizzaToOrdersFile(</span><span class="s0">string </span><span class="s1">jsonPizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">string </span><span class="s1">text = jsonPizza</span><span class="s0">;</span>
+            <span class="s0">try</span>
+            <span class="s1">{</span>
+                <span class="s4">// Create the file, or overwrite if the file exists.</span>
+                <span class="s0">if </span><span class="s1">(File.Exists(ordersPath))</span>
+                <span class="s1">{</span>
+                    <span class="s1">var lineCount = File.ReadLines(ordersPath).Count()</span><span class="s0">;</span>
+                    <span class="s1">text = String.Join(</span><span class="s2">&quot; &quot;</span><span class="s0">, </span><span class="s1">File.ReadAllLines(ordersPath))+</span><span class="s2">&quot;\n&quot; </span><span class="s1">+ (lineCount+</span><span class="s3">1</span><span class="s1">) + </span><span class="s2">&quot;: &quot; </span><span class="s1">+ text</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s1">text = </span><span class="s2">&quot;1: &quot; </span><span class="s1">+ text</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">using </span><span class="s1">(FileStream fs = File.Create(ordersPath))</span>
+                <span class="s1">{</span>
+                    <span class="s0">byte</span><span class="s1">[] info = </span><span class="s0">new </span><span class="s1">UTF8Encoding(</span><span class="s0">true</span><span class="s1">).GetBytes(text)</span><span class="s0">;</span>
+                    <span class="s4">// Add some information to the file.</span>
+                    <span class="s1">fs.Write(info</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s1">info.Length)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s4">// Open the stream and read it back.</span>
+                <span class="s0">using </span><span class="s1">(StreamReader sr = File.OpenText(ordersPath))</span>
+                <span class="s1">{</span>
+                    <span class="s0">string </span><span class="s1">s = </span><span class="s2">&quot;&quot;</span><span class="s0">;</span>
+                    <span class="s0">while </span><span class="s1">((s = sr.ReadLine()) != </span><span class="s0">null</span><span class="s1">)</span>
+                    <span class="s1">{</span>
+                        <span class="s1">Console.WriteLine(s)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s0">catch </span><span class="s1">(Exception ex)</span>
+            <span class="s1">{</span>
+                <span class="s1">Console.WriteLine(ex.ToString())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">return </span><span class="s1">Task.CompletedTask</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public static void </span><span class="s1">SaveToFavorite(</span><span class="s0">string </span><span class="s1">jsonPizza)</span>
+        <span class="s1">{</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;Uložit pizzu do oblíbených?&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;1 = Ano&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;2 = Ne&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s0">int </span><span class="s1">key = Program.KeyInput()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(key == </span><span class="s3">1</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">SaveToFavoriteFile(jsonPizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(key == </span><span class="s3">2</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">Program.Main(</span><span class="s0">new string</span><span class="s1">[] { })</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s0">continue;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">public static </span><span class="s1">Task SaveToFavoriteFile(</span><span class="s0">string </span><span class="s1">jsonPizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">string </span><span class="s1">text = jsonPizza</span><span class="s0">;</span>
+            <span class="s0">string </span><span class="s1">path = </span><span class="s2">@&quot;c:\temp\favorites.json&quot;</span><span class="s0">;</span>
+            <span class="s0">try</span>
+            <span class="s1">{</span>
+                <span class="s4">// Create the file, or overwrite if the file exists.</span>
+                <span class="s0">if </span><span class="s1">(File.Exists(path))</span>
+                <span class="s1">{</span>
+                    <span class="s1">var lineCount = File.ReadLines(path).Count()</span><span class="s0">;</span>
+                    <span class="s1">text = String.Join(</span><span class="s2">&quot; &quot;</span><span class="s0">, </span><span class="s1">File.ReadAllLines(path))+</span><span class="s2">&quot;\n&quot; </span><span class="s1">+ (lineCount+</span><span class="s3">1</span><span class="s1">) + </span><span class="s2">&quot;: &quot; </span><span class="s1">+ text</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s1">text = </span><span class="s2">&quot;1: &quot; </span><span class="s1">+ text</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">using </span><span class="s1">(FileStream fs = File.Create(path))</span>
+                <span class="s1">{</span>
+                    <span class="s0">byte</span><span class="s1">[] info = </span><span class="s0">new </span><span class="s1">UTF8Encoding(</span><span class="s0">true</span><span class="s1">).GetBytes(text)</span><span class="s0">;</span>
+                    <span class="s4">// Add some information to the file.</span>
+                    <span class="s1">fs.Write(info</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s1">info.Length)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s4">// Open the stream and read it back.</span>
+                <span class="s0">using </span><span class="s1">(StreamReader sr = File.OpenText(path))</span>
+                <span class="s1">{</span>
+                    <span class="s0">string </span><span class="s1">s = </span><span class="s2">&quot;&quot;</span><span class="s0">;</span>
+                    <span class="s0">while </span><span class="s1">((s = sr.ReadLine()) != </span><span class="s0">null</span><span class="s1">)</span>
+                    <span class="s1">{</span>
+                        <span class="s1">Console.WriteLine(s)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s0">catch </span><span class="s1">(Exception ex)</span>
+            <span class="s1">{</span>
+                <span class="s1">Console.WriteLine(ex.ToString())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">return </span><span class="s1">Task.CompletedTask</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        
+        <span class="s0">public void </span><span class="s1">ShowFavoritePizza()</span>
+        <span class="s1">{</span>
+            <span class="s1">Console.Clear()</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;------------Oblébené pizzy------------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Console.WriteLine(</span><span class="s2">&quot;1 = Zpět&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(File.Exists(favoritePath))</span>
+            <span class="s1">{</span>
+                <span class="s1">List&lt;Pizza&gt; favoritePizzas = </span><span class="s0">new </span><span class="s1">List&lt;Pizza&gt;()</span><span class="s0">;</span>
+
+                <span class="s0">int </span><span class="s1">counter = </span><span class="s3">0</span><span class="s0">;  </span>
+                
+                <span class="s0">foreach </span><span class="s1">(</span><span class="s0">string </span><span class="s1">line </span><span class="s0">in </span><span class="s1">System.IO.File.ReadLines(favoritePath))</span>
+                <span class="s1">{</span>
+                    <span class="s0">string</span><span class="s1">[] lineArray = line.ToCharArray().Select(c =&gt; c.ToString()).ToArray()</span><span class="s0">;</span>
+                    <span class="s0">string </span><span class="s1">json = </span><span class="s0">null;</span>
+                    <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">3</span><span class="s0">; </span><span class="s1">i &lt; line.Length</span><span class="s0">; </span><span class="s1">i++)</span>
+                    <span class="s1">{</span>
+                        <span class="s1">json += lineArray[i]</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s1">Pizza pizza = JsonConvert.DeserializeObject&lt;Pizza&gt;(json)</span><span class="s0">;</span>
+                    <span class="s1">favoritePizzas.Add(pizza)</span><span class="s0">;</span>
+                    <span class="s1">counter++</span><span class="s0">;</span>
+                    <span class="s1">Console.WriteLine(counter + </span><span class="s2">&quot;: &quot; </span><span class="s1">+ json)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s0">else</span>
+            <span class="s1">{</span>
+                <span class="s1">Console.Clear()</span><span class="s0">;</span>
+                <span class="s1">Console.WriteLine(</span><span class="s2">&quot;Nemáte žádné oblíbené pizzy&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">)</span>
+            <span class="s1">{</span>
+                <span class="s0">int </span><span class="s1">keyInput = KeyInput()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(keyInput == </span><span class="s3">1</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s1">Program.Main(</span><span class="s0">new string</span><span class="s1">[] { })</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public static void </span><span class="s1">Phase(</span><span class="s0">int </span><span class="s1">phase</span><span class="s0">, </span><span class="s1">Pizza pizza)</span>
+        <span class="s1">{</span>
+            <span class="s0">switch </span><span class="s1">(phase)</span>
+            <span class="s1">{</span>
+                <span class="s0">case </span><span class="s3">1</span><span class="s1">:</span>
+                    <span class="s1">pizza.SelectBase(pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s3">2</span><span class="s1">:</span>
+                    <span class="s1">pizza.SelectCheeseBase(pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s3">3</span><span class="s1">:</span>
+                    <span class="s1">pizza.SelectSyry(pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s3">4</span><span class="s1">:</span>
+                    <span class="s1">pizza.SelectUzeniny(pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s3">5</span><span class="s1">:</span>
+                    <span class="s1">pizza.SelectMaso(pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s3">6</span><span class="s1">:</span>
+                    <span class="s1">pizza.SelectOstatni(pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s3">7</span><span class="s1">:</span>
+                    <span class="s1">Program.SavePizzaToOrders(pizza)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">default</span><span class="s1">:</span>
+                    <span class="s0">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">public static int </span><span class="s1">KeyInput()</span>
+        <span class="s1">{</span>
+            <span class="s1">ConsoleKey key = Console.ReadKey(</span><span class="s0">true</span><span class="s1">).Key</span><span class="s0">;</span>
+            <span class="s0">switch </span><span class="s1">(key)</span>
+            <span class="s1">{</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad1:</span>
+                    <span class="s0">return </span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad2:</span>
+                    <span class="s0">return </span><span class="s3">2</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad3:</span>
+                    <span class="s0">return </span><span class="s3">3</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad4:</span>
+                    <span class="s0">return </span><span class="s3">4</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad5:</span>
+                    <span class="s0">return </span><span class="s3">5</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad6:</span>
+                    <span class="s0">return </span><span class="s3">6</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad7:</span>
+                    <span class="s0">return </span><span class="s3">7</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad8:</span>
+                    <span class="s0">return </span><span class="s3">8</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.NumPad9:</span>
+                    <span class="s0">return </span><span class="s3">9</span><span class="s0">;</span>
+
+                <span class="s0">case </span><span class="s1">ConsoleKey.D1:</span>
+                    <span class="s0">return </span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D2:</span>
+                    <span class="s0">return </span><span class="s3">2</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D3:</span>
+                    <span class="s0">return </span><span class="s3">3</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D4:</span>
+                    <span class="s0">return </span><span class="s3">4</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D5:</span>
+                    <span class="s0">return </span><span class="s3">5</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D6:</span>
+                    <span class="s0">return </span><span class="s3">6</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D7:</span>
+                    <span class="s0">return </span><span class="s3">7</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D8:</span>
+                    <span class="s0">return </span><span class="s3">8</span><span class="s0">;</span>
+                <span class="s0">case </span><span class="s1">ConsoleKey.D9:</span>
+                    <span class="s0">return </span><span class="s3">9</span><span class="s0">;</span>
+                <span class="s0">default</span><span class="s1">:</span>
+                    <span class="s0">return </span><span class="s3">0</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
