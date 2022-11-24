@@ -73,7 +73,7 @@ namespace PizzaConfigurator
                 string pizzaString = sr.ReadToEnd();
                 Pizza pizza = JsonConvert.DeserializeObject<Pizza>(pizzaString);
                 defaultPizzas.Add(pizza);
-                Console.WriteLine(counter + " = " + fileName + ": " + pizzaString);
+                Console.WriteLine(counter + " = Upravit " + fileName);
                 counter++;
             }
 
@@ -87,30 +87,92 @@ namespace PizzaConfigurator
                     case 2:
                         if (defaultPizzas.Count < 1)
                         {
-                            
-                            break;
+                            continue;
                         }
                         else
                         {
+                            Phase(1, defaultPizzas[0]);
                             break;
                         }
                     case 3:
+                        if (defaultPizzas.Count < 2)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Phase(1, defaultPizzas[1]);
+                            break;
+                        }
                         break;
                     case 4:
-                        break;
+                        if (defaultPizzas.Count < 3)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Phase(1, defaultPizzas[2]);
+                            break;
+                        }
                     case 5:
+                        if (defaultPizzas.Count < 4)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Phase(1, defaultPizzas[3]);
+                            break;
+                        }
                         break;
                     case 6:
+                        if (defaultPizzas.Count < 5)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Phase(1, defaultPizzas[4]);
+                            break;
+                        }
                         break;
                     case 7:
+                        if (defaultPizzas.Count < 6)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Phase(1, defaultPizzas[5]);
+                            break;
+                        }
                         break;
                     case 8:
+                        if (defaultPizzas.Count < 7)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Phase(1, defaultPizzas[6]);
+                            break;
+                        }
                         break;
                     case 9:
-                        break;
+                        if (defaultPizzas.Count < 8)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Phase(1, defaultPizzas[7]);
+                            break;
+                        } 
+                    default: 
+                        continue;
                 }
             }
-            
         }
 
         private static void SavePizzaToOrders(Pizza pizza)
@@ -162,6 +224,7 @@ namespace PizzaConfigurator
 
         public static void SaveToFavorite(string jsonPizza)
         {
+            Console.Clear();
             Console.WriteLine("Uložit pizzu do oblíbených?");
             Console.WriteLine("1 = Ano");
             Console.WriteLine("2 = Ne");
@@ -170,8 +233,11 @@ namespace PizzaConfigurator
                 int key = Program.KeyInput();
                 if (key == 1)
                 {
-                    SaveToFavoriteFile(jsonPizza);
-                    break;
+                    Console.Clear();
+                    Console.WriteLine("Název?");
+                    string favoritePizzaName = Console.ReadLine();
+                    SaveToFavoriteFile(jsonPizza,favoritePizzaName);
+                    Program.Main(new string[] { });
                 }
                 else if (key == 2)
                 {
@@ -184,7 +250,7 @@ namespace PizzaConfigurator
                 }
             }
         }
-        public static Task SaveToFavoriteFile(string jsonPizza)
+        public static Task SaveToFavoriteFile(string jsonPizza,string favoritePizzaName)
         {
             string text = jsonPizza;
             string path = @"c:\temp\favorites.json";
@@ -194,11 +260,11 @@ namespace PizzaConfigurator
                 if (File.Exists(path))
                 {
                     var lineCount = File.ReadLines(path).Count();
-                    text = String.Join(" ", File.ReadAllLines(path))+"\n" + (lineCount+1) + ": " + text;
+                    text = String.Join(" ", File.ReadAllLines(path))+"\n" + (lineCount+1) + ": " + favoritePizzaName + " " +text;
                 }
                 else
                 {
-                    text = "1: " + text;
+                    text = "1: " + favoritePizzaName + text;
                 }
 
                 using (FileStream fs = File.Create(path))
@@ -218,7 +284,6 @@ namespace PizzaConfigurator
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
@@ -239,16 +304,12 @@ namespace PizzaConfigurator
                 
                 foreach (string line in System.IO.File.ReadLines(favoritePath))
                 {
-                    string[] lineArray = line.ToCharArray().Select(c => c.ToString()).ToArray();
-                    string json = null;
-                    for (int i = 3; i < line.Length; i++)
-                    {
-                        json += lineArray[i];
-                    }
-                    Pizza pizza = JsonConvert.DeserializeObject<Pizza>(json);
+                    line.Remove(0, line.IndexOf("{"));
+                    
+                    Pizza pizza = JsonConvert.DeserializeObject<Pizza>(line);
                     favoritePizzas.Add(pizza);
                     counter++;
-                    Console.WriteLine(counter + ": " + json);
+                    Console.WriteLine(counter + ": " + line);
                 }
             }
             else
