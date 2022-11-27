@@ -310,7 +310,7 @@ namespace PizzaConfigurator
                     Pizza pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
                     favoritePizzas.Add(pizza);
                     counter++;
-                    Console.WriteLine(counter + ": " + line);
+                    Console.WriteLine(line);
                 }
             }
             else
