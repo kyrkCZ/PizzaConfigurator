@@ -302,14 +302,11 @@ namespace PizzaConfigurator
             {
                 List<Pizza> favoritePizzas = new List<Pizza>();
 
-                int counter = 0;  
-                
                 foreach (string line in System.IO.File.ReadLines(favoritePath))
                 {
                     string jsonLine = line.Remove(0, line.IndexOf("{"));
                     Pizza pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
                     favoritePizzas.Add(pizza);
-                    counter++;
                     Console.WriteLine(line);
                 }
             }
