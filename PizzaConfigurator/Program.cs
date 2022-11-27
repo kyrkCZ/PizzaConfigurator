@@ -306,9 +306,8 @@ namespace PizzaConfigurator
                 
                 foreach (string line in System.IO.File.ReadLines(favoritePath))
                 {
-                    line.Remove(0, line.IndexOf("{"));
-                    
-                    Pizza pizza = JsonConvert.DeserializeObject<Pizza>(line);
+                    string jsonLine = line.Remove(0, line.IndexOf("{"));
+                    Pizza pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
                     favoritePizzas.Add(pizza);
                     counter++;
                     Console.WriteLine(counter + ": " + line);
@@ -318,6 +317,7 @@ namespace PizzaConfigurator
             {
                 Console.Clear();
                 Console.WriteLine("Nemáte žádné oblíbené pizzy");
+                Console.WriteLine("1=Zpět");
             }
             while (true)
             {
