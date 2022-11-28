@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 using System.Text.Json;
 
@@ -380,7 +381,6 @@ namespace PizzaConfigurator
 
         public Pizza()
         {
-            
         }
     }
 }

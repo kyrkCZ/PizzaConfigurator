@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -305,9 +305,10 @@ namespace PizzaConfigurator
                 foreach (string line in System.IO.File.ReadLines(favoritePath))
                 {
                     string jsonLine = line.Remove(0, line.IndexOf("{"));
+                    string name = line.Remove(line.IndexOf("{"), line.Length-line.IndexOf("{"));
                     Pizza pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
                     favoritePizzas.Add(pizza);
-                    Console.WriteLine(line);
+                    Console.WriteLine(name +": "+ WriteOnlyTrueValues(pizza));
                 }
             }
             else
@@ -324,6 +325,28 @@ namespace PizzaConfigurator
                     Program.Main(new string[] { });
                 }
             }
+        }
+
+        public string WriteOnlyTrueValues(Pizza pizza)
+        {
+            string text = "";
+            PropertyInfo[] properties = typeof(Pizza).GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                try
+                {
+                    if(Boolean.Parse(property.GetValue(pizza).ToString())==true)
+                    text = text + property.Name + ", ";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }   
+
+            return text;
         }
 
         public static void Phase(int phase, Pizza pizza)
