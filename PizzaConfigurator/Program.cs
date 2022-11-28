@@ -75,7 +75,7 @@ namespace PizzaConfigurator
                 string pizzaString = sr.ReadToEnd();
                 Pizza pizza = JsonConvert.DeserializeObject<Pizza>(pizzaString);
                 defaultPizzas.Add(pizza);
-                Console.WriteLine(counter + " = Upravit " + fileName);
+                Console.WriteLine(counter + " = Upravit " + fileName + " (" + (WriteOnlyTrueValues(pizza)) + ")");
                 counter++;
             }
 
