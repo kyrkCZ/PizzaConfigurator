@@ -192,7 +192,7 @@ namespace PizzaConfigurator
                 if (File.Exists(ordersPath))
                 {
                     var lineCount = File.ReadLines(ordersPath).Count();
-                    text = String.Join(" ", File.ReadAllLines(ordersPath))+"\n" + (lineCount+1) + ": " + text;
+                    text = String.Join("\n", File.ReadAllLines(ordersPath))+"\n" + (lineCount+1) + ": " + text;
                 }
                 else
                 {
@@ -261,12 +261,13 @@ namespace PizzaConfigurator
                 // Create the file, or overwrite if the file exists.
                 if (File.Exists(path))
                 {
-                    var lineCount = File.ReadLines(path).Count();
-                    text = String.Join(" ", File.ReadAllLines(path))+"\n" + (lineCount+1) + ": " + favoritePizzaName + " " +text;
+                    int lineCount = File.ReadLines(path).Count();
+                    
+                    text = String.Join("\n", File.ReadAllLines(path))+"\n" + (lineCount+1) + ": " + favoritePizzaName + " " + text;
                 }
                 else
                 {
-                    text = "1: " + favoritePizzaName + text;
+                    text = "1: " + favoritePizzaName + " " +  text;
                 }
 
                 using (FileStream fs = File.Create(path))
