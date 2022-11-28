@@ -4,21 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace PizzaConfigurator
 {
-    class Program
+    internal class Program
     {
-        private static readonly string exePath = Assembly.GetEntryAssembly()?.Location;
-        const string ordersPath = @"c:\temp\orders.json";
-        const string favoritePath = @"c:\temp\favorites.json";
+        private const string ordersPath = @"c:\temp\orders.json";
+        private const string favoritePath = @"c:\temp\favorites.json";
         private const string pathString = @"c:\temp";
+        private static readonly string exePath = Assembly.GetEntryAssembly()?.Location;
+
         public static void Main(string[] args)
         {
             Directory.CreateDirectory(pathString);
-            Program program = new Program();
+            var program = new Program();
             program.Start();
         }
 
@@ -31,12 +31,11 @@ namespace PizzaConfigurator
             Console.WriteLine("3 = Výběr ze základních pizza");
             Console.WriteLine("4 = Odejít");
             while (true)
-            {
                 switch (KeyInput())
                 {
                     case 1:
                         //Sestaveni pizza from scratch
-                        Pizza pizza = new Pizza();
+                        var pizza = new Pizza();
                         Phase(1, pizza);
                         return;
                     case 2:
@@ -54,7 +53,6 @@ namespace PizzaConfigurator
                     default:
                         continue;
                 }
-            }
         }
 
         private void ShowDefaultPizza()
@@ -62,136 +60,108 @@ namespace PizzaConfigurator
             Console.Clear();
             Console.WriteLine("------------Základní pizzy------------");
             Console.WriteLine("1 = Zpátky");
-            string strWorkPath = Path.GetDirectoryName(exePath) + "\\PizzaTypes";
-            DirectoryInfo directoryInfo = new DirectoryInfo(strWorkPath);
-            List<Pizza> defaultPizzas = new List<Pizza>();
-            int counter = 2;
+            var strWorkPath = Path.GetDirectoryName(exePath) + "\\PizzaTypes";
+            var directoryInfo = new DirectoryInfo(strWorkPath);
+            var defaultPizzas = new List<Pizza>();
+            var counter = 2;
             foreach (var file in directoryInfo.GetFiles("*.json"))
             {
-                String fileName = file.Name.Remove(file.Name.IndexOf(".", StringComparison.Ordinal), 5);
+                var fileName = file.Name.Remove(file.Name.IndexOf(".", StringComparison.Ordinal), 5);
                 fileName = fileName.ToUpper();
-                StreamReader sr = File.OpenText(file.FullName);
-                string pizzaString = sr.ReadToEnd();
-                Pizza pizza = JsonConvert.DeserializeObject<Pizza>(pizzaString);
+                var sr = File.OpenText(file.FullName);
+                var pizzaString = sr.ReadToEnd();
+                var pizza = JsonConvert.DeserializeObject<Pizza>(pizzaString);
                 defaultPizzas.Add(pizza);
-                Console.WriteLine(counter + " = Upravit " + fileName + " (" + (WriteOnlyTrueValues(pizza)) + ")");
+                Console.WriteLine(counter + " = Upravit " + fileName + " (" + WriteOnlyTrueValues(pizza) + ")");
                 counter++;
             }
 
             while (true)
-            {
                 switch (KeyInput())
                 {
                     case 1:
                         Main(new string[] { });
                         return;
                     case 2:
-                        if (defaultPizzas.Count < 1)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 1) continue;
 
                         Phase(1, defaultPizzas[0]);
                         return;
                     case 3:
-                        if (defaultPizzas.Count < 2)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 2) continue;
 
                         Phase(1, defaultPizzas[1]);
                         return;
                     case 4:
-                        if (defaultPizzas.Count < 3)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 3) continue;
 
                         Phase(1, defaultPizzas[2]);
                         return;
                     case 5:
-                        if (defaultPizzas.Count < 4)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 4) continue;
 
                         Phase(1, defaultPizzas[3]);
                         break;
                     case 6:
-                        if (defaultPizzas.Count < 5)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 5) continue;
 
                         Phase(1, defaultPizzas[4]);
                         return;
                     case 7:
-                        if (defaultPizzas.Count < 6)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 6) continue;
 
                         Phase(1, defaultPizzas[5]);
                         return;
                     case 8:
-                        if (defaultPizzas.Count < 7)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 7) continue;
 
                         Phase(1, defaultPizzas[6]);
                         return;
                     case 9:
-                        if (defaultPizzas.Count < 8)
-                        {
-                            continue;
-                        }
+                        if (defaultPizzas.Count < 8) continue;
 
                         Phase(1, defaultPizzas[7]);
                         return;
-                    default: 
+                    default:
                         continue;
                 }
-            }
         }
 
         private static void SavePizzaToOrders(Pizza pizza)
         {
-            string jsonPizza = JsonConvert.SerializeObject(pizza);
+            var jsonPizza = JsonConvert.SerializeObject(pizza);
             SavePizzaToOrdersFile(jsonPizza);
             SaveToFavorite(jsonPizza);
         }
-        public static Task SavePizzaToOrdersFile(string jsonPizza)
+
+        private static void SavePizzaToOrdersFile(string jsonPizza)
         {
-            string text = jsonPizza;
+            var text = jsonPizza;
             try
             {
                 // Create the file, or overwrite if the file exists.
                 if (File.Exists(ordersPath))
                 {
                     var lineCount = File.ReadLines(ordersPath).Count();
-                    text = String.Join("\n", File.ReadAllLines(ordersPath))+"\n" + (lineCount+1) + ": " + text;
+                    text = string.Join("\n", File.ReadAllLines(ordersPath)) + "\n" + (lineCount + 1) + ": " + text;
                 }
                 else
                 {
                     text = "1: " + text;
                 }
 
-                using (FileStream fs = File.Create(ordersPath))
+                using (var fs = File.Create(ordersPath))
                 {
-                    byte[] info = new UTF8Encoding(true).GetBytes(text);
+                    var info = new UTF8Encoding(true).GetBytes(text);
                     // Add some information to the file.
                     fs.Write(info, 0, info.Length);
                 }
 
                 // Open the stream and read it back.
-                using (StreamReader sr = File.OpenText(ordersPath))
+                using (var sr = File.OpenText(ordersPath))
                 {
                     string s;
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        Console.WriteLine(s);
-                    }
+                    while ((s = sr.ReadLine()) != null) Console.WriteLine(s);
                 }
             }
 
@@ -199,10 +169,9 @@ namespace PizzaConfigurator
             {
                 Console.WriteLine(ex.ToString());
             }
-            return Task.CompletedTask;
         }
 
-        public static void SaveToFavorite(string jsonPizza)
+        private static void SaveToFavorite(string jsonPizza)
         {
             Console.Clear();
             Console.WriteLine("Uložit pizzu do oblíbených?");
@@ -210,13 +179,13 @@ namespace PizzaConfigurator
             Console.WriteLine("2 = Ne");
             while (true)
             {
-                int key = KeyInput();
+                var key = KeyInput();
                 if (key == 1)
                 {
                     Console.Clear();
                     Console.WriteLine("Název?");
-                    string favoritePizzaName = Console.ReadLine();
-                    SaveToFavoriteFile(jsonPizza,favoritePizzaName);
+                    var favoritePizzaName = Console.ReadLine();
+                    SaveToFavoriteFile(jsonPizza, favoritePizzaName);
                     Main(new string[] { });
                 }
                 else if (key == 2)
@@ -226,49 +195,47 @@ namespace PizzaConfigurator
                 }
             }
         }
-        public static Task SaveToFavoriteFile(string jsonPizza,string favoritePizzaName)
+
+        private static void SaveToFavoriteFile(string jsonPizza, string favoritePizzaName)
         {
-            string text = jsonPizza;
-            string path = @"c:\temp\favorites.json";
+            var text = jsonPizza;
+            var path = @"c:\temp\favorites.json";
             try
             {
                 // Create the file, or overwrite if the file exists.
                 if (File.Exists(path))
                 {
-                    int lineCount = File.ReadLines(path).Count();
-                    
-                    text = String.Join("\n", File.ReadAllLines(path))+"\n" + (lineCount+1) + ": " + favoritePizzaName + " " + text;
+                    var lineCount = File.ReadLines(path).Count();
+
+                    text = string.Join("\n", File.ReadAllLines(path)) + "\n" + (lineCount + 1) + ": " +
+                           favoritePizzaName + " " + text;
                 }
                 else
                 {
-                    text = "1: " + favoritePizzaName + " " +  text;
+                    text = "1: " + favoritePizzaName + " " + text;
                 }
 
-                using (FileStream fs = File.Create(path))
+                using (var fs = File.Create(path))
                 {
-                    byte[] info = new UTF8Encoding(true).GetBytes(text);
+                    var info = new UTF8Encoding(true).GetBytes(text);
                     // Add some information to the file.
                     fs.Write(info, 0, info.Length);
                 }
 
                 // Open the stream and read it back.
-                using (StreamReader sr = File.OpenText(path))
+                using (var sr = File.OpenText(path))
                 {
                     string s;
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        Console.WriteLine(s);
-                    }
+                    while ((s = sr.ReadLine()) != null) Console.WriteLine(s);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-            return Task.CompletedTask;
         }
-        
-        public void ShowFavoritePizza()
+
+        private void ShowFavoritePizza()
         {
             Console.Clear();
             Console.WriteLine("------------Oblébené pizzy------------");
@@ -277,13 +244,14 @@ namespace PizzaConfigurator
             {
                 //List<Pizza> favoritePizzas = new List<Pizza>();
 
-                foreach (string line in File.ReadLines(favoritePath))
+                foreach (var line in File.ReadLines(favoritePath))
                 {
-                    string jsonLine = line.Remove(0, line.IndexOf("{", StringComparison.Ordinal));
-                    string name = line.Remove(line.IndexOf("{", StringComparison.Ordinal), line.Length-line.IndexOf("{", StringComparison.Ordinal));
-                    Pizza pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
+                    var jsonLine = line.Remove(0, line.IndexOf("{", StringComparison.Ordinal));
+                    var name = line.Remove(line.IndexOf("{", StringComparison.Ordinal),
+                        line.Length - line.IndexOf("{", StringComparison.Ordinal));
+                    var pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
                     //favoritePizzas.Add(pizza);
-                    Console.WriteLine(name +": "+ WriteOnlyTrueValues(pizza));
+                    Console.WriteLine(name + ": " + WriteOnlyTrueValues(pizza));
                 }
             }
             else
@@ -292,9 +260,10 @@ namespace PizzaConfigurator
                 Console.WriteLine("Nemáte žádné oblíbené pizzy");
                 Console.WriteLine("1=Zpět");
             }
+
             while (true)
             {
-                int keyInput = KeyInput();
+                var keyInput = KeyInput();
                 if (keyInput == 1)
                 {
                     Main(new string[] { });
@@ -303,16 +272,15 @@ namespace PizzaConfigurator
             }
         }
 
-        public string WriteOnlyTrueValues(Pizza pizza)
+        private string WriteOnlyTrueValues(Pizza pizza)
         {
-            string text = "";
-            PropertyInfo[] properties = typeof(Pizza).GetProperties();
+            var text = "";
+            var properties = typeof(Pizza).GetProperties();
 
-            foreach (PropertyInfo property in properties)
-            {
+            foreach (var property in properties)
                 try
                 {
-                    if(Boolean.Parse(property.GetValue(pizza).ToString()))
+                    if (bool.Parse(property.GetValue(pizza).ToString()))
                         text = text + property.Name + ", ";
                 }
                 catch (Exception e)
@@ -320,7 +288,6 @@ namespace PizzaConfigurator
                     Console.WriteLine(e);
                     throw;
                 }
-            }   
 
             return text;
         }
@@ -355,7 +322,7 @@ namespace PizzaConfigurator
 
         public static int KeyInput()
         {
-            ConsoleKey key = Console.ReadKey(true).Key;
+            var key = Console.ReadKey(true).Key;
             switch (key)
             {
                 case ConsoleKey.NumPad1:

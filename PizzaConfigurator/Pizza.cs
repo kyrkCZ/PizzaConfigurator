@@ -103,7 +103,7 @@ namespace PizzaConfigurator
                         continue;
                     case 5:
                         Program.Phase(4, pizza);
-                        break;
+                        return;
                     case 6:
                         Program.Phase(2, pizza);
                         continue;
@@ -144,7 +144,7 @@ namespace PizzaConfigurator
                         continue;
                     case 5:
                         Program.Phase(5, pizza);
-                        break;
+                        return;
                     case 6:
                         Program.Phase(3, pizza);
                         continue;
@@ -193,7 +193,7 @@ namespace PizzaConfigurator
             }
         }
 
-        private Boolean kukurice, zampiony, feferonky, ananas, vejce, olivy; //ostatní
+        private Boolean kukurice, feferonky, ananas, vejce, olivy; //ostatní
 
 
         public void SelectOstatni(Pizza pizza)
@@ -228,10 +228,10 @@ namespace PizzaConfigurator
                         continue;
                     case 6:
                         Program.Phase(7, pizza);
-                        break;
+                        return;
                     case 7:
                         Program.Phase(5, pizza);
-                        break;
+                        return;
                     default:
                         continue;
                 }
@@ -315,13 +315,7 @@ namespace PizzaConfigurator
             get => kukurice;
             set => kukurice = value;
         }
-
-        public bool Zampiony
-        {
-            get => zampiony;
-            set => zampiony = value;
-        }
-
+        
         public bool Feferonky
         {
             get => feferonky;
@@ -347,7 +341,7 @@ namespace PizzaConfigurator
         }
         
         public Pizza(bool @base, bool cheeseBase, bool mozzarela, bool eidam, bool hermelin, bool parmazan, bool sunka,
-            bool slanina, bool vysocina, bool klobaska, bool kureci, bool veprove, bool kukurice, bool zampiony,
+            bool slanina, bool vysocina, bool klobaska, bool kureci, bool veprove, bool kukurice,
             bool feferonky, bool ananas, bool vejce, bool olivy)
         {
             this.@base = @base;
@@ -363,7 +357,6 @@ namespace PizzaConfigurator
             this.kureci = kureci;
             this.veprove = veprove;
             this.kukurice = kukurice;
-            this.zampiony = zampiony;
             this.feferonky = feferonky;
             this.ananas = ananas;
             this.vejce = vejce;
