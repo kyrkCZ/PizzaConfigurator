@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Reflection;
-using System.Text.Json;
 
 namespace PizzaConfigurator
 {
@@ -26,22 +23,20 @@ namespace PizzaConfigurator
                     Program.Phase(2, pizza);
                     break;
                 }
-                else if (key == 2)
+
+                if (key == 2)
                 {
                     pizza.@base = false;
                     Program.Phase(2, pizza);
                     break;
                 }
-                else if (key == 3)
+
+                if (key == 3)
                 {
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
                     Program.Main(new string[] { });
                     break;
-                }
-                else
-                {
-                    continue;
                 }
             }
         }
@@ -62,20 +57,18 @@ namespace PizzaConfigurator
                     Program.Phase(3, pizza);
                     break;
                 }
-                else if (key == 2)
+
+                if (key == 2)
                 {
                     pizza.cheeseBase = false;
                     Program.Phase(3, pizza);
                     break;
                 }
-                else if (key == 3)
+
+                if (key == 3)
                 {
                     Program.Phase(1, pizza);
                     break;
-                }
-                else
-                {
-                    continue;
                 }
             }
         }
@@ -185,19 +178,17 @@ namespace PizzaConfigurator
                     pizza.veprove = !pizza.veprove;
                     continue;
                 }
-                else if (key == 3)
+
+                if (key == 3)
                 {
                     Program.Phase(6, pizza);
                     break;
                 }
-                else if (key == 4)
+
+                if (key == 4)
                 {
                     Program.Phase(4, pizza);
                     break;
-                }
-                else
-                {
-                    continue;
                 }
             }
         }

@@ -11,18 +11,18 @@ namespace PizzaConfigurator
 {
     class Program
     {
-        private static readonly string exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
+        private static readonly string exePath = Assembly.GetEntryAssembly()?.Location;
         const string ordersPath = @"c:\temp\orders.json";
         const string favoritePath = @"c:\temp\favorites.json";
         private const string pathString = @"c:\temp";
         public static void Main(string[] args)
         {
-            System.IO.Directory.CreateDirectory(pathString);
+            Directory.CreateDirectory(pathString);
             Program program = new Program();
             program.Start();
         }
 
-        public void Start()
+        private void Start()
         {
             Console.Clear();
             Console.WriteLine("------------Pizza konfigurátor------------");
@@ -38,23 +38,22 @@ namespace PizzaConfigurator
                         //Sestaveni pizza from scratch
                         Pizza pizza = new Pizza();
                         Phase(1, pizza);
-                        break;
+                        return;
                     case 2:
                         //Oblibené pizzy
                         ShowFavoritePizza();
-                        break;
+                        return;
                     case 3:
                         //Select and edit default pizza
                         ShowDefaultPizza();
-                        break;
+                        return;
                     case 4:
                         //End
-                        System.Environment.Exit(0);
-                        break;
+                        Environment.Exit(0);
+                        return;
                     default:
                         continue;
                 }
-                continue;
             }
         }
 
@@ -63,13 +62,13 @@ namespace PizzaConfigurator
             Console.Clear();
             Console.WriteLine("------------Základní pizzy------------");
             Console.WriteLine("1 = Zpátky");
-            string strWorkPath = System.IO.Path.GetDirectoryName(exePath) + "\\PizzaTypes";
+            string strWorkPath = Path.GetDirectoryName(exePath) + "\\PizzaTypes";
             DirectoryInfo directoryInfo = new DirectoryInfo(strWorkPath);
             List<Pizza> defaultPizzas = new List<Pizza>();
             int counter = 2;
             foreach (var file in directoryInfo.GetFiles("*.json"))
             {
-                String fileName = file.Name.Remove(file.Name.IndexOf("."), 5);
+                String fileName = file.Name.Remove(file.Name.IndexOf(".", StringComparison.Ordinal), 5);
                 fileName = fileName.ToUpper();
                 StreamReader sr = File.OpenText(file.FullName);
                 string pizzaString = sr.ReadToEnd();
@@ -85,92 +84,71 @@ namespace PizzaConfigurator
                 {
                     case 1:
                         Main(new string[] { });
-                        break;
+                        return;
                     case 2:
                         if (defaultPizzas.Count < 1)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[0]);
-                            break;
-                        }
+
+                        Phase(1, defaultPizzas[0]);
+                        return;
                     case 3:
                         if (defaultPizzas.Count < 2)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[1]);
-                            break;
-                        }
-                        break;
+
+                        Phase(1, defaultPizzas[1]);
+                        return;
                     case 4:
                         if (defaultPizzas.Count < 3)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[2]);
-                            break;
-                        }
+
+                        Phase(1, defaultPizzas[2]);
+                        return;
                     case 5:
                         if (defaultPizzas.Count < 4)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[3]);
-                            break;
-                        }
+
+                        Phase(1, defaultPizzas[3]);
                         break;
                     case 6:
                         if (defaultPizzas.Count < 5)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[4]);
-                            break;
-                        }
-                        break;
+
+                        Phase(1, defaultPizzas[4]);
+                        return;
                     case 7:
                         if (defaultPizzas.Count < 6)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[5]);
-                            break;
-                        }
-                        break;
+
+                        Phase(1, defaultPizzas[5]);
+                        return;
                     case 8:
                         if (defaultPizzas.Count < 7)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[6]);
-                            break;
-                        }
-                        break;
+
+                        Phase(1, defaultPizzas[6]);
+                        return;
                     case 9:
                         if (defaultPizzas.Count < 8)
                         {
                             continue;
                         }
-                        else
-                        {
-                            Phase(1, defaultPizzas[7]);
-                            break;
-                        } 
+
+                        Phase(1, defaultPizzas[7]);
+                        return;
                     default: 
                         continue;
                 }
@@ -209,7 +187,7 @@ namespace PizzaConfigurator
                 // Open the stream and read it back.
                 using (StreamReader sr = File.OpenText(ordersPath))
                 {
-                    string s = "";
+                    string s;
                     while ((s = sr.ReadLine()) != null)
                     {
                         Console.WriteLine(s);
@@ -232,23 +210,19 @@ namespace PizzaConfigurator
             Console.WriteLine("2 = Ne");
             while (true)
             {
-                int key = Program.KeyInput();
+                int key = KeyInput();
                 if (key == 1)
                 {
                     Console.Clear();
                     Console.WriteLine("Název?");
                     string favoritePizzaName = Console.ReadLine();
                     SaveToFavoriteFile(jsonPizza,favoritePizzaName);
-                    Program.Main(new string[] { });
+                    Main(new string[] { });
                 }
                 else if (key == 2)
                 {
-                    Program.Main(new string[] { });
+                    Main(new string[] { });
                     break;
-                }
-                else
-                {
-                    continue;
                 }
             }
         }
@@ -280,7 +254,7 @@ namespace PizzaConfigurator
                 // Open the stream and read it back.
                 using (StreamReader sr = File.OpenText(path))
                 {
-                    string s = "";
+                    string s;
                     while ((s = sr.ReadLine()) != null)
                     {
                         Console.WriteLine(s);
@@ -301,14 +275,14 @@ namespace PizzaConfigurator
             Console.WriteLine("1 = Zpět");
             if (File.Exists(favoritePath))
             {
-                List<Pizza> favoritePizzas = new List<Pizza>();
+                //List<Pizza> favoritePizzas = new List<Pizza>();
 
-                foreach (string line in System.IO.File.ReadLines(favoritePath))
+                foreach (string line in File.ReadLines(favoritePath))
                 {
-                    string jsonLine = line.Remove(0, line.IndexOf("{"));
-                    string name = line.Remove(line.IndexOf("{"), line.Length-line.IndexOf("{"));
+                    string jsonLine = line.Remove(0, line.IndexOf("{", StringComparison.Ordinal));
+                    string name = line.Remove(line.IndexOf("{", StringComparison.Ordinal), line.Length-line.IndexOf("{", StringComparison.Ordinal));
                     Pizza pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
-                    favoritePizzas.Add(pizza);
+                    //favoritePizzas.Add(pizza);
                     Console.WriteLine(name +": "+ WriteOnlyTrueValues(pizza));
                 }
             }
@@ -323,7 +297,8 @@ namespace PizzaConfigurator
                 int keyInput = KeyInput();
                 if (keyInput == 1)
                 {
-                    Program.Main(new string[] { });
+                    Main(new string[] { });
+                    return;
                 }
             }
         }
@@ -337,8 +312,8 @@ namespace PizzaConfigurator
             {
                 try
                 {
-                    if(Boolean.Parse(property.GetValue(pizza).ToString())==true)
-                    text = text + property.Name + ", ";
+                    if(Boolean.Parse(property.GetValue(pizza).ToString()))
+                        text = text + property.Name + ", ";
                 }
                 catch (Exception e)
                 {
@@ -373,9 +348,7 @@ namespace PizzaConfigurator
                     pizza.SelectOstatni(pizza);
                     break;
                 case 7:
-                    Program.SavePizzaToOrders(pizza);
-                    break;
-                default:
+                    SavePizzaToOrders(pizza);
                     break;
             }
         }
