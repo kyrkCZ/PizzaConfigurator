@@ -4,8 +4,8 @@ namespace PizzaConfigurator
 {
     public class Pizza
     {
-        private Boolean @base; //case false tomato, case true smetana
-        private Boolean cheeseBase; //case false bez sýrového okraje, case false se
+        private Boolean tomatoZaklad; //case false tomato, case true smetana
+        private Boolean syrovyOkraj; //case false bez sýrového okraje, case false se
 
         public void SelectBase(Pizza pizza)
         {
@@ -19,14 +19,14 @@ namespace PizzaConfigurator
                 int key = Program.KeyInput();
                 if (key == 1)
                 {
-                    pizza.@base = true;
+                    pizza.tomatoZaklad = true;
                     Program.Phase(2, pizza);
                     break;
                 }
 
                 if (key == 2)
                 {
-                    pizza.@base = false;
+                    pizza.tomatoZaklad = false;
                     Program.Phase(2, pizza);
                     break;
                 }
@@ -53,14 +53,14 @@ namespace PizzaConfigurator
                 int key = Program.KeyInput();
                 if (key == 1)
                 {
-                    pizza.cheeseBase = true;
+                    pizza.syrovyOkraj = true;
                     Program.Phase(3, pizza);
                     break;
                 }
 
                 if (key == 2)
                 {
-                    pizza.cheeseBase = false;
+                    pizza.syrovyOkraj = false;
                     Program.Phase(3, pizza);
                     break;
                 }
@@ -238,16 +238,16 @@ namespace PizzaConfigurator
             }
         }
 
-        public bool Base
+        public bool TomatoZaklad
         {
-            get => @base;
-            set => @base = value;
+            get => tomatoZaklad;
+            set => tomatoZaklad = value;
         }
 
-        public bool CheeseBase
+        public bool SyrovyOkraj
         {
-            get => cheeseBase;
-            set => cheeseBase = value;
+            get => syrovyOkraj;
+            set => syrovyOkraj = value;
         }
 
         public bool Mozzarela
@@ -340,12 +340,12 @@ namespace PizzaConfigurator
             set => olivy = value;
         }
         
-        public Pizza(bool @base, bool cheeseBase, bool mozzarela, bool eidam, bool hermelin, bool parmazan, bool sunka,
+        public Pizza(bool tomatoZaklad, bool syrovyOkraj, bool mozzarela, bool eidam, bool hermelin, bool parmazan, bool sunka,
             bool slanina, bool vysocina, bool klobaska, bool kureci, bool veprove, bool kukurice,
             bool feferonky, bool ananas, bool vejce, bool olivy)
         {
-            this.@base = @base;
-            this.cheeseBase = cheeseBase;
+            this.tomatoZaklad = tomatoZaklad;
+            this.syrovyOkraj = syrovyOkraj;
             this.mozzarela = mozzarela;
             this.eidam = eidam;
             this.hermelin = hermelin;

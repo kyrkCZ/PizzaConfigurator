@@ -8,16 +8,16 @@ using Newtonsoft.Json;
 
 namespace PizzaConfigurator
 {
-    internal class Program
+    public class Program
     {
-        private const string ordersPath = @"c:\temp\orders.json";
-        private const string favoritePath = @"c:\temp\favorites.json";
-        private const string pathString = @"c:\temp";
-        private static readonly string exePath = Assembly.GetEntryAssembly()?.Location;
+        private const string OrdersPath = @"c:\temp\orders.json";
+        private const string FavoritePath = @"c:\temp\favorites.json";
+        private const string PathString = @"c:\temp";
+        private static readonly string ExePath = Assembly.GetEntryAssembly()?.Location;
 
         public static void Main(string[] args)
         {
-            Directory.CreateDirectory(pathString);
+            Directory.CreateDirectory(PathString);
             var program = new Program();
             program.Start();
         }
@@ -60,7 +60,7 @@ namespace PizzaConfigurator
             Console.Clear();
             Console.WriteLine("------------Základní pizzy------------");
             Console.WriteLine("1 = Zpátky");
-            var strWorkPath = Path.GetDirectoryName(exePath) + "\\PizzaTypes";
+            var strWorkPath = Path.GetDirectoryName(ExePath) + "\\PizzaTypes";
             var directoryInfo = new DirectoryInfo(strWorkPath);
             var defaultPizzas = new List<Pizza>();
             var counter = 2;
@@ -72,7 +72,7 @@ namespace PizzaConfigurator
                 var pizzaString = sr.ReadToEnd();
                 var pizza = JsonConvert.DeserializeObject<Pizza>(pizzaString);
                 defaultPizzas.Add(pizza);
-                Console.WriteLine(counter + " = Upravit " + fileName + " (" + WriteOnlyTrueValues(pizza) + ")");
+                Console.WriteLine(counter + " = Upravit " + fileName + " (" + OnlyTrueValuesPizza(pizza) + ")");
                 counter++;
             }
 
@@ -140,17 +140,17 @@ namespace PizzaConfigurator
             try
             {
                 // Create the file, or overwrite if the file exists.
-                if (File.Exists(ordersPath))
+                if (File.Exists(OrdersPath))
                 {
-                    var lineCount = File.ReadLines(ordersPath).Count();
-                    text = string.Join("\n", File.ReadAllLines(ordersPath)) + "\n" + (lineCount + 1) + ": " + text;
+                    var lineCount = File.ReadLines(OrdersPath).Count();
+                    text = string.Join("\n", File.ReadAllLines(OrdersPath)) + "\n" + (lineCount + 1) + ": " + text;
                 }
                 else
                 {
                     text = "1: " + text;
                 }
 
-                using (var fs = File.Create(ordersPath))
+                using (var fs = File.Create(OrdersPath))
                 {
                     var info = new UTF8Encoding(true).GetBytes(text);
                     // Add some information to the file.
@@ -158,7 +158,7 @@ namespace PizzaConfigurator
                 }
 
                 // Open the stream and read it back.
-                using (var sr = File.OpenText(ordersPath))
+                using (var sr = File.OpenText(OrdersPath))
                 {
                     string s;
                     while ((s = sr.ReadLine()) != null) Console.WriteLine(s);
@@ -240,18 +240,18 @@ namespace PizzaConfigurator
             Console.Clear();
             Console.WriteLine("------------Oblébené pizzy------------");
             Console.WriteLine("1 = Zpět");
-            if (File.Exists(favoritePath))
+            if (File.Exists(FavoritePath))
             {
                 //List<Pizza> favoritePizzas = new List<Pizza>();
 
-                foreach (var line in File.ReadLines(favoritePath))
+                foreach (var line in File.ReadLines(FavoritePath))
                 {
                     var jsonLine = line.Remove(0, line.IndexOf("{", StringComparison.Ordinal));
                     var name = line.Remove(line.IndexOf("{", StringComparison.Ordinal),
                         line.Length - line.IndexOf("{", StringComparison.Ordinal));
                     var pizza = JsonConvert.DeserializeObject<Pizza>(jsonLine);
                     //favoritePizzas.Add(pizza);
-                    Console.WriteLine(name + ": " + WriteOnlyTrueValues(pizza));
+                    Console.WriteLine(name + ": " + OnlyTrueValuesPizza(pizza));
                 }
             }
             else
@@ -272,7 +272,7 @@ namespace PizzaConfigurator
             }
         }
 
-        private string WriteOnlyTrueValues(Pizza pizza)
+        public string OnlyTrueValuesPizza(Pizza pizza)
         {
             var text = "";
             var properties = typeof(Pizza).GetProperties();
